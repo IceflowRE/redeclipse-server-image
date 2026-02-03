@@ -28,9 +28,11 @@ RUN adduser -S -D redeclipse \
 # Update application repository list, create build dir, build server, move server files, create other permanent files and clean up
 RUN echo "@edge-testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
     && apk update \
-    && apk add --no-cache --virtual build-deps gcc g++ zlib-dev openal-soft-dev libsndfile-dev git ca-certificates freetype-dev coreutils cmake make \
-    && apk add --no-cache freealut-dev@edge-testing \
-    && apk add --no-cache libstdc++ \
+    && apk add --no-cache --virtual build-deps gcc g++ zlib-dev openal-soft-dev libsndfile-dev git ca-certificates freetype-dev coreutils make \
+    && apk add --no-cache libstdc++ freealut-dev@edge-testing \
+    && apk add --no-cache python3 py3-pip \
+    && pip install "cmake>=3,<4" --break-system-packages \
+    \
     && git clone --depth 1 -b "$RE_TAG" https://github.com/redeclipse/base /temp \
     \
     && mkdir -p /redeclipse/bin/native \

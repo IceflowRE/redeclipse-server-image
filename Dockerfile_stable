@@ -27,8 +27,11 @@ RUN adduser -S -D redeclipse \
 
 # Update application repository list, create build dir, build server, move server files, create other permanent files and clean up
 RUN apk update \
-    && apk add --no-cache --virtual build-deps gcc g++ zlib-dev git ca-certificates coreutils cmake make sdl2_image-dev sdl2_mixer-dev \
+    && apk add --no-cache --virtual build-deps gcc g++ zlib-dev git ca-certificates coreutils make sdl2_image-dev sdl2_mixer-dev \
     && apk add --no-cache libstdc++ \
+    && apk add --no-cache python3 py3-pip \
+    && pip install "cmake>=3,<4" --break-system-packages \
+    \
     && git clone --depth 1 -b "$RE_TAG" https://github.com/redeclipse/base /temp \
     \
     && cd /temp \
