@@ -11,7 +11,7 @@ services:
             dockerfile: Dockerfile_master
             args:
                 # <tag>: can be any git reference (branch name, tag, SHA) (e.g. `master`, `v2.0.0`, ...)
-                TAG: master
+                RE_TAG: master
                 RE_COMMIT: ""
                 ALPINE_SHA: ""
                 DOCKERFILE_SHA: ""

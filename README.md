@@ -116,7 +116,7 @@ build:
     dockerfile: <dockerfile>
     args:
         # <tag>: can be any git reference (branch name, tag, SHA) (e.g. `master`, `v2.0.0`, ...)
-        TAG: <tag>
+        RE_TAG: <tag>
         RE_COMMIT: ""
         ALPINE_SHA: ""
         DOCKERFILE_SHA: ""

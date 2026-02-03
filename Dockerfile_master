@@ -2,7 +2,7 @@
 FROM alpine
 
 # redeclipse tag
-ARG TAG
+ARG RE_TAG
 # redeclipse commit sha
 ARG RE_COMMIT
 # alpine base sha
@@ -14,8 +14,8 @@ ARG DOCKERFILE_SHA
 LABEL author="Iceflower S"
 LABEL maintainer="Iceflower S"
 LABEL email="iceflower@gmx.de"
-LABEL description="Red Eclipse Server - $TAG"
-LABEL re-tag="$TAG"
+LABEL description="Red Eclipse Server - $RE_TAG"
+LABEL re-tag="$RE_TAG"
 LABEL re-commit="$RE_COMMIT"
 LABEL alpine-sha="$ALPINE_SHA"
 LABEL dockerfile-sha="$DOCKERFILE_SHA"
@@ -31,7 +31,7 @@ RUN echo "@edge-testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /
     && apk add --no-cache --virtual build-deps gcc g++ zlib-dev openal-soft-dev libsndfile-dev git ca-certificates freetype-dev coreutils cmake make \
     && apk add --no-cache freealut-dev@edge-testing \
     && apk add --no-cache libstdc++ \
-    && git clone --depth 1 -b "$TAG" https://github.com/redeclipse/base /temp \
+    && git clone --depth 1 -b "$RE_TAG" https://github.com/redeclipse/base /temp \
     \
     && mkdir -p /redeclipse/bin/native \
     && cd /temp \

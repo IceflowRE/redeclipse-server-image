@@ -90,7 +90,7 @@ func dockerBuild(workDir string, repo string, config *BuildConfig, hash *Hash) b
 	dockerArchName := repo + ":" + config.Arch + "-" + dockerTag
 
 	success := runCmd("docker", []string{"build",
-		"--build-arg", "TAG=" + dockerTag,
+		"--build-arg", "RE_TAG=" + dockerTag,
 		"--build-arg", "RE_COMMIT=" + hash.ReCommit,
 		"--build-arg", "ALPINE_SHA=" + hash.Alpine,
 		"--build-arg", "DOCKERFILE_SHA=" + hash.Dockerfile,
