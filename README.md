@@ -7,7 +7,7 @@
 
 ---
 
-This provides the source for an easy handling and maintaining Docker image of a [Red Eclipse](https://redeclipse.net/)
+This provides the source for an easy handling and maintaining Docker image of a [Red Eclipse](https://www.redeclipse.net/)
 Server.  
 Additional with a Go console application which will update the DockerHub images.  
 Currently the Docker images are build against the latest commits and will be checked for updates once a day.
