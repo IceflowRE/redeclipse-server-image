@@ -52,18 +52,18 @@ jobs:
           }
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Cache updater executable
         id: cache-updater
-        uses: actions/cache@v3
+        uses: actions/cache@v5
         with:
           path: updater
           key: ${{ runner.os }}-${{ hashFiles('updater') }}
       - name: Install Go
         if: steps.cache-updater.outputs.cache-hit != 'true'
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v6
         with:
-          go-version: 1.19.x
+          go-version-file: "go-docker-updater/go.mod"
       - name: Build
         if: steps.cache-updater.outputs.cache-hit != 'true'
         run: |
