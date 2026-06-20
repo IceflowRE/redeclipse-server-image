@@ -1,7 +1,7 @@
 # Red Eclipse Server Image
 
 ![maintained](https://img.shields.io/badge/maintained-yes-brightgreen.svg)
-[![github actions](https://img.shields.io/github/actions/workflow/status/IceflowRE/redeclipse-server-image/build.yml)](https://github.com/IceflowRE/redeclipse-server-image/actions/workflows/build.yaml)  
+[![github actions](https://img.shields.io/github/actions/workflow/status/iceflowre/redeclipse-server-image/build.yaml)](https://github.com/IceflowRE/redeclipse-server-image/actions/workflows/build.yaml)  
 [![GHCR](https://img.shields.io/badge/GHCR-GHCR?style=social&logo=github)](https://github.com/IceflowRE/redeclipse-server-image/pkgs/container/redeclipse-server) 
 [![DockerHub](https://img.shields.io/badge/DockerHub-DockerHub?style=social&logo=docker)](https://hub.docker.com/r/iceflower/redeclipse-server)
 [![GitHub](https://img.shields.io/badge/GitHub-GitHub?style=social&logo=github)](https://github.com/IceflowRE/redeclipse-server-image)
