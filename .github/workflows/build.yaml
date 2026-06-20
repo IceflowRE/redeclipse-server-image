@@ -71,6 +71,11 @@ jobs:
             image-tags: ["latest", "2.0.0"]
             git-repository: "https://github.com/redeclipse/base.git"
 
+          - ref: "refs/heads/stable"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["stable"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
           - ref: "ae3c6fa1585fc7c0375e74ed6f618b5fc791a109"
             dockerfile: "Dockerfile_1_5_3"
             image-tags: ["1.6-impulse"]
