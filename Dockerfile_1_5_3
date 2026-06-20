@@ -56,7 +56,8 @@ RUN apk update && \
     mkdir -p /redeclipse/config && \
     mkdir -p /redeclipse/data/maps && \
     mkdir -p /re-server-config/home && \
-    mkdir -p /re-server-config/package
+    mkdir -p /re-server-config/package && \
+    mkdir -p /re-server-config/sauer
 
 COPY --from=builder /redeclipse/bin/native/ /redeclipse/bin/native/
 COPY --from=builder /redeclipse/config /redeclipse/config/
@@ -66,4 +67,4 @@ USER redeclipse
 
 WORKDIR /redeclipse
 ENTRYPOINT ["./bin/native/redeclipse_server_linux"]
-CMD ["-h/re-server-config/home/", "-p/re-server-config/package/"]
+CMD ["-h/re-server-config/home/", "-p/re-server-config/package/", "-o/re-server-config/sauer/"]

@@ -12,25 +12,22 @@ RUN apk update && \
 # checkoout source code
 RUN git init /redeclipse && \
     cd /redeclipse && \
-    git remote add origin https://github.com/redeclipse/base.git && \
-    git fetch --depth 1 origin "${RE_REF}" && \
-    git checkout FETCH_HEAD
+    git remote add origin https://github.com/redeclipse/oldsvnre.git && \
+    git sparse-checkout init --no-cone && \
+    git sparse-checkout set --no-cone "*" "!/data/**" "/data/config/**" "!/game/mek/**" "!/src/site/**" && \
+    git fetch --depth 1 --filter=blob:none origin "${RE_REF}" && \
+    git reset --hard FETCH_HEAD
 
 WORKDIR /redeclipse
 
-# pull maps
-RUN git submodule update --init --depth 1 ./data/maps && \
-    rm -rf ./data/maps/.git/
-
 # build server
 RUN make install-server \
-        WANT_STEAM= \
-        WANT_DISCORD= \
         INSTDIR="/redeclipse/bin/native/" \
         CFLAGS="-O3 -fomit-frame-pointer -ffast-math -fno-finite-math-only -funroll-loops -flto" \
         CXXFLAGS="-O3 -fomit-frame-pointer -ffast-math -fno-finite-math-only -funroll-loops -flto" \
         LDFLAGS="-O3 -flto" \
-        -O -j$(nproc) -C src
+        -O -j$(nproc) -C src && \
+    mv ./bin/native/redeclipse_server_native ./bin/native/redeclipse_server_linux
 
 FROM ghcr.io/linuxcontainers/alpine:latest
 
@@ -53,17 +50,17 @@ RUN adduser -S -D redeclipse && \
 RUN apk update && \
     apk add --no-cache libstdc++ && \
     mkdir -p /redeclipse/bin/native && \
-    mkdir -p /redeclipse/config && \
-    mkdir -p /redeclipse/data/maps && \
+    mkdir -p /redeclipse/data/ && \
     mkdir -p /re-server-config/home && \
-    mkdir -p /re-server-config/package
+    mkdir -p /re-server-config/package && \
+    mkdir -p /re-server-config/sauer
 
 COPY --from=builder /redeclipse/bin/native/ /redeclipse/bin/native/
-COPY --from=builder /redeclipse/config /redeclipse/config/
-COPY --from=builder /redeclipse/data/maps/ /redeclipse/data/maps/
+COPY --from=builder /redeclipse/data/ /redeclipse/data/
+COPY --from=builder /redeclipse/game/ /redeclipse/game/
 
 USER redeclipse
 
 WORKDIR /redeclipse
 ENTRYPOINT ["./bin/native/redeclipse_server_linux"]
-CMD ["-h/re-server-config/home/", "-p/re-server-config/package/"]
+CMD ["-h/re-server-config/home/", "-p/re-server-config/package/", "-o/re-server-config/sauer/"]

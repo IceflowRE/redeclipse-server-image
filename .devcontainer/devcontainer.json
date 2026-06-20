@@ -1,0 +1,26 @@
+{
+	"name": "Go Docker Updater",
+	"image": "mcr.microsoft.com/devcontainers/go:1.26",
+	"containerEnv": {
+		"GOEXPERIMENT": "jsonv2"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"github.vscode-github-actions",
+				"golang.go",
+				"ms-azuretools.vscode-docker",
+				"redhat.vscode-yaml"
+			],
+			"settings": {
+				"go.toolsEnvVars": {
+					"GOEXPERIMENT": "jsonv2"
+				},
+				"go.testEnvVars": {
+					"GOEXPERIMENT": "jsonv2"
+				}
+			}
+		}
+	},
+	"postCreateCommand": "./.devcontainer/post-create.sh"
+}

@@ -1,92 +1,90 @@
-# Red Eclipse Server Docker
+# Red Eclipse Server Image
 
-[![maintained](https://img.shields.io/badge/maintained-yes-brightgreen.svg)][github]
-[![][github actions images]][github actions]
-[![DockerHub](https://img.shields.io/badge/Docker_Hub--FF69A4.svg?style=social)][docker hub]
-[![Github](https://img.shields.io/badge/Github--FF69A4.svg?style=social)][github]
-
----
-
-This provides the source for an easy handling and maintaining Docker image of a [Red Eclipse](https://www.redeclipse.net/)
-Server.  
-Additional with a Go console application which will update the DockerHub images.  
-Currently the Docker images are build against the latest commits and will be checked for updates once a day.
+![maintained](https://img.shields.io/badge/maintained-yes-brightgreen.svg)
+[![github actions](https://img.shields.io/github/actions/workflow/status/IceflowRE/redeclipse-server-image/build.yml)](https://github.com/IceflowRE/redeclipse-server-image/actions/workflows/build.yaml)  
+[![GHCR](https://img.shields.io/badge/GHCR-GHCR?style=social&logo=github)](https://github.com/IceflowRE/redeclipse-server-image/pkgs/container/redeclipse-server) 
+[![DockerHub](https://img.shields.io/badge/DockerHub-DockerHub?style=social&logo=docker)](https://hub.docker.com/r/iceflower/redeclipse-server)
+[![GitHub](https://img.shields.io/badge/GitHub-GitHub?style=social&logo=github)](https://github.com/IceflowRE/redeclipse-server-image)
 
 ---
 
-## Supported tags and respective `Dockerfile` links
+An easy-to-use container image for a [Red Eclipse](https://www.redeclipse.net) Server.
 
-- [`master`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_master)
-- [`stable`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_stable)
-- [`v1.5.3`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_stable)
-- [`v1.5.5`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_stable)
-- [`v1.5.6`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_stable)
-- [`v1.5.8`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_stable)
-- [`v1.6.0`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_stable)
-- [`v2.0.0`](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/Dockerfile_2_0_0)
+## Supported tags and respective `Dockerfile` Links
 
-\* *`stable` does not mark the latest stable release, it tags the latest legacy version (v1.x.x)*
+* [`dev`, `master`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_2_0_0) - [Source Commit](https://github.com/redeclipse/base/tree/master)  
+  The development branch.
+* [`latest`, `2.0.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_2_0_0) - [Source Commit](https://github.com/redeclipse/base/tree/v2.0.0)
+* [`stable`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/stable)  
+  The latest legacy version (stable branch).
+* [`1.6-impulse`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/ae3c6fa1585fc7c0375e74ed6f618b5fc791a109)  
+  The latest version with the 1.6. impulse system.
+* [`1.6.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/v1.6.0)
+* [`1.5.8`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.8)
+* [`1.5.6`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.6)
+* [`1.5.5`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.5)
+* [`1.5.3`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_3) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.3)
+* [`1.5.2`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_0) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.2)  
+  Bundles 1.5.3 maps, as the 1.5.2 maps are no longer available.
+* [`1.5.1`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_0) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.1)  
+  Bundles 1.5.3 maps, as the 1.5.1 maps are no longer available.
+* [`1.5.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_5_0) - [Source Commit](https://github.com/redeclipse/base/tree/v1.5.0)  
+  Bundles 1.5.3 maps, as the 1.5.0 maps are no longer available.
+* [`1.4.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_4_0) - [Source Commit](https://github.com/redeclipse/oldsvnre/tree/v1.4.0)
+* [`1.3.1`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_0_0) - [Source Commit](https://github.com/redeclipse/oldsvnre/tree/v1.3.0)
+* [`1.2.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_0_0) - [Source Commit](https://github.com/redeclipse/oldsvnre/tree/v1.2.0)
+* [`1.1.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_0_0) - [Source Commit](https://github.com/redeclipse/oldsvnre/tree/v1.1.0)
+* [`1.0.0`](https://github.com/IceflowRE/redeclipse-server-image/blob/main/Dockerfile_1_0_0) - [Source Commit](https://github.com/redeclipse/oldsvnre/tree/v1.0.0)
 
-Available architectures are `amd64`.
+## Quick reference
 
-If your architecture is not available check if RE can be build on that architecture and follow [An image is not available for my architecture](#an-image-is-not-available-for-my-architecture).
+* **Registries**:  
+  GitHub Container Registry (recommended): [`ghcr.io/iceflower/redeclipse-server`](ghcr.io/iceflower/redeclipse-server)  
+  Docker Hub: [`docker.io/iceflower/redeclipse-server`](https://hub.docker.com/r/iceflower/redeclipse-server)
 
-## How to use this image
+* **Built architectures**:  
+  `amd64`, `arm64v8`
 
-We will use docker compose as it is the easiest way to manage the running container.
+* **Where to file issues**:  
+  [https://github.com/IceflowRE/redeclipse-server-image/issues](https://github.com/IceflowRE/redeclipse-server-image/issues)
 
-Create a Docker Compose file and name it `docker-compose.yml`, as a starting point you can use [docker-compose-template.yml](https://github.com/IceflowRE/redeclipse-server-docker/blob/main/docker-compose-template.yml)
+## Usage
 
-Replace the `<variable>` including the brackets.
+Using [Docker Compose](https://docs.docker.com/compose/) is the easiest way to manage your Red Eclipse server container.
+
+1. Create a file named `compose.yaml`. You can copy the template below or use the provided [compose-template.yaml](https://github.com/IceflowRE/redeclipse-server-image/blob/main/compose-template.yaml).
+2. Replace all `<variable_placeholders>` (including the angle brackets) with your actual settings.
 
 ```yml
 services:
-    # <service_name>: the name to access this later (e.g. `master`, `v2_0_0`)
-    <service_name>:
-        # <tag>: the image tag you want to use (e.g. `master`, `v2.0.0`)
-        image: iceflower/redeclipse-server:<tag>
-        ports:
-            # <serverport>: this port will be published and accessible from outside,
-            # the port number must match port defined in RE's `servinit.cfg`
-            - "<serverport>:<serverport>/udp"
-            # <serverport + 1>: the server port above plus one
-            - "<serverport + 1>:<serverport + 1>/udp"
-        restart: unless-stopped
-        volumes:
-            # <RE home dir>: path to the RE home/ config directory on your host system 
-            # (e.g. `/home/iceflower/re-master/home`)
-            - type: bind
-              source: <RE home dir>
-              target: /re-server-config/home
-              read_only: true
-            # <RE package dir>: path to the RE package directory on your host system, you can place custom maps there
-            # if you do not want this, just remove this section (e.g. `/home/iceflower/re-master/package`)
-            - type: bind
-              source: /home/iceflower/redeclipse-config/package
-              target: /re-server-config/package
-              read_only: true
-            # <sauerbraten dir>: path to a Sauerbraten directory/installation
-            # if you use a version higher or equal `v2.0.0` or `master` remove this section
-            # (e.g. `/home/iceflower/sauerbraten`)
-            - type: bind
-              source: <sauerbraten dir>
-              target: /re-server-config/sauer
-              read_only: true
-        logging:
-            options:
-                max-size: "2000k"
-                max-file: "10"
+  # <service_name>: The identifier used to manage this service (e.g., myserver, master, re_2_0)
+  <service_name>:
+    # <tag>: The image tag you want to use (e.g., master, latest, 2.0.0)
+    image: ghcr.io/iceflower/redeclipse-server:<tag>
+    ports:
+      # <serverport>: Must match the port defined in Red Eclipse's servinit.cfg
+      - "28801:28801/udp"
+      # <serverport + 1>: The server port plus one (e.g., if serverport is 28801, use 28802)
+      - "28802:28802/udp"
+    restart: unless-stopped
+    volumes:
+      # <home_dir>: Path to the RE home/config directory on your host system (e.g., /home/iceflower/re-master/home)
+      - <home_dir>:/re-server-config/home:ro
+      # <package_dir>: Optional path to your local package directory for custom maps. Remove this section if not needed.
+      - <package_dir>:/re-server-config/package:ro
+      # <sauerbraten_dir>: Only required for legacy versions (< 2.0.0). Remove this block if using v2.0.0 or master.
+      - <sauerbraten_dir>:/re-server-config/sauer:ro
 ```
 
-To pull/start/stop a specific service add the service name to the end otherwise, it is applied to all.
+To pull/start/stop a specific service add the service name to the end (`docker compose pull myserver`) otherwise all services will be affected.
 
-- Pull the latest docker image from Docker Hub for all defined services  
+* Pull the latest docker image from Docker Hub for all defined services  
   `docker compose pull`
 
-- Start/ Restart container  
+* Start/ Restart container  
   `docker compose up -d`
 
-- Shutdown and wait a maximum of 10 minutes before forcing it  
+* Shutdown and wait a maximum of 10 minutes before forcing it  
   `docker compose stop --time=600`
 
 #### Multiple Server
@@ -95,87 +93,83 @@ Copy and paste the whole service section above and change the values (service na
 
 ### An image is not available for my architecture
 
-First check if Red Eclipse can be build on your architecture. If yes, continue.
+If an image is not natively available for your architecture, first verify if Red Eclipse can be compiled on your target platform. If it can, follow these steps:
 
-Follow the table below to copy the required `Dockerfile` next to your `docker-compose.yml`. Have the chosen `Dockerfile` in mind.
+1. Copy the appropriate `Dockerfile_X_X_X` file corresponding to your version from this repository and place it next to your `compose.yaml`:
 
-| Version  |     Dockerfile      |
-|:--------:|:-------------------:|
-|  master  | `Dockerfile_master` |
-|  stable  | `Dockerfile_stable` |
-| < v2.0.0 | `Dockerfile_stable` |
-|  v2.0.0  | `Dockerfile_2_0_0`  |
+|   Version Range    |     Dockerfile     |
+| :----------------: | :----------------: |
+| `2.0.0` - `master` | `Dockerfile_2_0_0` |
+| `1.5.3` - `stable` | `Dockerfile_1_5_3` |
+| `1.5.0` - `1.5.3`  | `Dockerfile_1_5_0` |
+|      `1.4.0`       | `Dockerfile_1_4_0` |
+| `1.0.0` - `1.3.1`  | `Dockerfile_1_0_0` |
 
-Create a file named `.dockerignore` next to the `Dockerfile` with the content `**`.
+2. Create a file named `.dockerignore` next to the `Dockerfile` with the content `**`.
 
-Edit your `docker-compose-yml` and replace the `image: ...` part in the service you want to build with
+3. Edit your `compose.yaml` and replace the `image: ...` part in the service you want to build with
 
 ```yml
 build:
-    # <dockerfile>: name of the dockerfile, usable for the chosen tag below
-    dockerfile: <dockerfile>
-    args:
-        # <tag>: can be any git reference (branch name, tag, SHA) (e.g. `master`, `v2.0.0`, ...)
-        RE_TAG: <tag>
-        RE_COMMIT: ""
-        ALPINE_SHA: ""
-        DOCKERFILE_SHA: ""
+  # <dockerfile>: name of the dockerfile, usable for the chosen reference below
+  dockerfile: <dockerfile>
+  args:
+    # <reference>: can be any git reference (branch name, tag, SHA) (e.g. master, 2.0.0, ...)
+    RE_REF: <reference>
 ```
 
-Then use `docker compose build` to build the custom image.
+4. Use `docker compose build` to build the custom image.
+
+> [!NOTE]
+> Depending on your specific host environment, minor modifications to the `Dockerfile` instructions may be necessary to complete the build successfully.
 
 ## Update server automatically
 
-Create a file with the name `update-server.sh` (make sure it has executable rights).
-You can place it right next to the `docker-compose.yml`.
+### Linux
 
-Adjust the directory path according where you place the file.
+1. Create a script named `update-server.sh` next to your `compose.yaml`
 
 ```bash
 #!/bin/bash -e
 
-# EDIT NEXT LINE
+# Adjust this path to match your deployment directory
 cd /home/iceflower/re/
 docker compose stop -t 600
+# Uncomment next line if using a custom local architecture build
 # docker compose build
 docker compose pull
 docker compose up -d
 ```
 
-To update regularly you can create a cron job, how to do this exactly refer to a guide matching your OS.
+2. Make the script executable:
+
+```shell
+chmod +x update-server.sh
+```
+
+3. Configure a cron job (`crontab -e`) to execute the updates on a schedule. For example, to run every day at 03:00:
 
 ```cron
 0 3 * * * /home/iceflower/re/update-server.sh > /home/iceflower/re/cron.log 2>&1
 ```
 
-This will update every day at 3:00.
+## Image updater
 
-## DockerHub Image Updater
+The repository include a small tool to check for updates and get the image digest and support the image creation in the CI.
 
-Build with
+Building:
 
 ```shell
-cd go-docker-updater
+cd go-image-updater
 go build -x -o updater ./cmd/updater/
 ```
 
-For more options see `--help`.
+For usage options see `--help`.
 
-The updater is used to update the DockerHub images.
-
-## Web
-
-https://github.com/IceflowRE/redeclipse-server-docker
-
-## Credits
-
-- Developer
-    - Iceflower S
-        - iceflower@gmx.de
 
 ## License
 
-Copyright 2017-preset Iceflower S
+Copyright 2017-present Iceflower S
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
@@ -192,13 +186,4 @@ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 
 ---
 
-The Red Eclipse server files are
-using [THE RED ECLIPSE LICENSE](https://github.com/redeclipse/base/blob/master/doc/license.txt).
-
-[github actions]: https://github.com/IceflowRE/redeclipse-server-docker/actions/workflows/update_docker_images.yml
-
-[github actions images]: https://img.shields.io/github/actions/workflow/status/IceflowRE/redeclipse-server-docker/update_docker_images.yml
-
-[github]: https://github.com/IceflowRE/redeclipse-server-docker
-
-[docker hub]: https://hub.docker.com/r/iceflower/redeclipse-server
+*Red Eclipse is licensed under [THE RED ECLIPSE LICENSE](https://github.com/redeclipse/base/blob/master/doc/license.txt). Red Eclipse game binary and map assets are bundled directly during container provisioning and are independent properties of their respective authors.*

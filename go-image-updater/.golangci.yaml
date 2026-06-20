@@ -1,0 +1,136 @@
+# Last updated at golanci-lint v2.12.2
+version: "2"
+formatters:
+  enable:
+    - gofumpt
+    - gci
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - localmodule
+      custom-order: true
+linters:
+  default: all
+  disable:
+    # duplicate of gocyclo
+    - cyclop
+    # not required, covered by archcheck
+    - depguard
+    # too many cases where we omit fields as we want default values
+    - exhaustruct
+    # inits are required to setup global states
+    - gochecknoinits
+    # naked returns are not allowed, they make the code less readable and harder to maintain
+    - nakedret
+    # named returns are better self documenting
+    - nonamedreturns
+    # gofumpt not supporting formatting tags
+    - tagalign
+    # outdated use wsl_v5
+    - wsl
+  settings:
+    custom:
+      multisplit:
+        type: "module"
+        description: "Detects when multiple identifiers are declared, assigned or listed together and suggests splitting them into multiple lines for improved readability."
+        settings:
+          rules:
+            - assign
+            - const-decl-func
+            - const-decl-pkg
+            - func-params
+            - func-return-values
+            - short-var-decl
+            - struct-fields
+            - var-decl-func
+            - var-decl-pkg
+            - var-decl-init-func
+            - var-decl-init-pkg
+    errcheck:
+      exclude-functions:
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - fmt.Print
+        - fmt.Printf
+        - fmt.Println
+    funlen:
+      lines: 80
+    gocognit:
+      min-complexity: 15
+    gocyclo:
+      min-complexity: 15
+    lll:
+      line-length: 160
+    mnd:
+      ignored-numbers:
+        - "0"
+        - "1"
+        - "0.0"
+        - "1.0"
+    revive:
+      enable-all-rules: true
+      rules:
+        # covered by goconst and mnd
+        - name: add-constant
+          disabled: true
+        # covered by gocognit
+        - name: cognitive-complexity
+          disabled: true
+        # covered by gocyclo
+        - name: cyclomatic
+          disabled: true
+        # covered by funlen
+        - name: function-length
+          disabled: true
+        # covered by lll
+        - name: line-length-limit
+          disabled: true
+        # covered by errcheck
+        - name: unhandled-error
+          disabled: true
+        # everything starting with underscore is considered as intentionally unused, but may have a name to improve readability
+        - name: unused-parameter
+          arguments:
+            - allow-regex: "^_.*"
+    varnamelen:
+      ignore-names:
+        - "db"
+        - "err"
+        - "fn"
+    wsl_v5:
+      default: all
+      # most is disabled because the developer can be trusted enough to group the code properly
+      disable:
+        # while generally good, it adds too often lines, where compact code is preferred
+        - after-block
+        # prefer compact code
+        - append
+        # prefer compact code
+        - assign
+        # prefer compact code
+        - assign-expr
+        # prefer compact code
+        - branch
+        # prefer ungrouped declarations
+        - decl
+        # prefer compact code
+        - expr
+        # prefer compact code
+        - for
+        # prefer compact code
+        - if
+        # prefer compact code
+        - inc-dec
+        # prefer compact code
+        - range
+        # prefer compact code
+        - return
+        # prefer compact code
+        - send
+        # prefer compact code
+        - switch
+        # prefer compact code
+        - type-switch

@@ -12,25 +12,29 @@ RUN apk update && \
 # checkoout source code
 RUN git init /redeclipse && \
     cd /redeclipse && \
-    git remote add origin https://github.com/redeclipse/base.git && \
-    git fetch --depth 1 origin "${RE_REF}" && \
-    git checkout FETCH_HEAD
+    git remote add origin https://github.com/redeclipse/oldsvnre.git && \
+    git sparse-checkout init --no-cone && \
+    git sparse-checkout set --no-cone "*" "!/data/**" "/data/*" "/data/maps/**" "!/src/site/**" && \
+    git fetch --depth 1 --filter=blob:none origin "${RE_REF}" && \
+    git reset --hard FETCH_HEAD
 
 WORKDIR /redeclipse
 
-# pull maps
-RUN git submodule update --init --depth 1 ./data/maps && \
-    rm -rf ./data/maps/.git/
+# prebuild enet to fix arm64 builds for 1.0.0-1.2.0
+RUN if [ "$(uname -m)" = "aarch64" ]; then \
+        cd src/enet \
+        && ./configure --enable-shared=no --enable-static=yes --build=aarch64-unknown-linux-gnu; \
+    fi
 
 # build server
-RUN make install-server \
-        WANT_STEAM= \
-        WANT_DISCORD= \
-        INSTDIR="/redeclipse/bin/native/" \
+RUN mkdir bin && \
+    make install-server \
         CFLAGS="-O3 -fomit-frame-pointer -ffast-math -fno-finite-math-only -funroll-loops -flto" \
         CXXFLAGS="-O3 -fomit-frame-pointer -ffast-math -fno-finite-math-only -funroll-loops -flto" \
         LDFLAGS="-O3 -flto" \
-        -O -j$(nproc) -C src
+        -O -j$(nproc) -C src && \
+    mkdir -p /redeclipse/bin/native && \
+    mv bin/reserver_native bin/native/redeclipse_server_linux
 
 FROM ghcr.io/linuxcontainers/alpine:latest
 
@@ -41,6 +45,7 @@ LABEL org.opencontainers.image.title="Red Eclipse Server"
 LABEL org.opencontainers.image.licenses="LicenseRef-Red-Eclipse-License"
 LABEL org.opencontainers.image.authors="Iceflower S <iceflower@iceflower.eu>"
 LABEL org.opencontainers.image.vendor="Iceflower S <iceflower@iceflower.eu>"
+LABEL org.opencontainers.image.description="Red Eclipse Server Docker Image"
 LABEL org.opencontainers.image.base.name="ghcr.io/linuxcontainers/alpine:latest"
 LABEL org.opencontainers.image.revision="${RE_COMMIT}"
 
@@ -53,17 +58,16 @@ RUN adduser -S -D redeclipse && \
 RUN apk update && \
     apk add --no-cache libstdc++ && \
     mkdir -p /redeclipse/bin/native && \
-    mkdir -p /redeclipse/config && \
-    mkdir -p /redeclipse/data/maps && \
+    mkdir -p /redeclipse/data/ && \
     mkdir -p /re-server-config/home && \
-    mkdir -p /re-server-config/package
+    mkdir -p /re-server-config/package && \
+    mkdir -p /re-server-config/sauer
 
 COPY --from=builder /redeclipse/bin/native/ /redeclipse/bin/native/
-COPY --from=builder /redeclipse/config /redeclipse/config/
-COPY --from=builder /redeclipse/data/maps/ /redeclipse/data/maps/
+COPY --from=builder /redeclipse/data/ /redeclipse/data/
 
 USER redeclipse
 
 WORKDIR /redeclipse
 ENTRYPOINT ["./bin/native/redeclipse_server_linux"]
-CMD ["-h/re-server-config/home/", "-p/re-server-config/package/"]
+CMD ["-h/re-server-config/home/", "-p/re-server-config/package/", "-o/re-server-config/sauer/"]

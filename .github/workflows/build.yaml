@@ -1,0 +1,241 @@
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "34 5 * * *"
+
+permissions:
+  contents: read
+  packages: write
+
+name: Build Images
+jobs:
+  build-updater:
+    name: "Build updater / ${{ matrix.arch }}"
+    runs-on: ubuntu-slim
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - amd64
+          - arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Cache updater executable
+        id: cache_updater
+        uses: actions/cache@v5
+        with:
+          path: updater
+          key: ${{ runner.os }}-${{ matrix.arch }}-${{ hashFiles('go-image-updater/**') }}
+          lookup-only: true
+
+      - name: Install Go
+        if: steps.cache_updater.outputs.cache-hit != 'true'
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: "go-image-updater/go.mod"
+          cache-dependency-path: "go-image-updater/go.sum"
+
+      - name: Build updater
+        if: steps.cache_updater.outputs.cache-hit != 'true'
+        working-directory: go-image-updater
+        run: |
+          GOOS=linux GOARCH=${{ matrix.arch }} go build -x -o ../updater ./cmd/updater/
+
+  build-images:
+    name: "${{ matrix.config.image-tags[0] }} / ${{ matrix.platform.arch }}"
+    runs-on: ${{ matrix.platform.runner }}
+    needs: build-updater
+    env:
+      DOCKER_IMAGE: "docker.io/iceflower/redeclipse-server"
+      GHCR_IMAGE: "ghcr.io/iceflowre/redeclipse-server"
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-26.04-arm
+        config:
+          - ref: "refs/heads/master"
+            dockerfile: "Dockerfile_2_0_0"
+            image-tags: ["dev", "master"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v2.0.0"
+            dockerfile: "Dockerfile_2_0_0"
+            image-tags: ["latest", "2.0.0"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "ae3c6fa1585fc7c0375e74ed6f618b5fc791a109"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["1.6-impulse"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.6.0"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["1.6.0"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.8"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["1.5.8"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.6"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["1.5.6"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.5"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["1.5.5"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.3"
+            dockerfile: "Dockerfile_1_5_3"
+            image-tags: ["1.5.3"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.2"
+            dockerfile: "Dockerfile_1_5_0"
+            image-tags: ["1.5.2"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.1"
+            dockerfile: "Dockerfile_1_5_0"
+            image-tags: ["1.5.1"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.5.0"
+            dockerfile: "Dockerfile_1_5_0"
+            image-tags: ["1.5.0"]
+            git-repository: "https://github.com/redeclipse/base.git"
+
+          - ref: "refs/tags/v1.4.0"
+            dockerfile: "Dockerfile_1_4_0"
+            image-tags: ["1.4.0"]
+            git-repository: "https://github.com/redeclipse/oldsvnre.git"
+
+          - ref: "refs/tags/v1.3.0"
+            dockerfile: "Dockerfile_1_0_0"
+            image-tags: ["1.3.1"]
+            git-repository: "https://github.com/redeclipse/oldsvnre.git"
+
+          - ref: "refs/tags/v1.2.0"
+            dockerfile: "Dockerfile_1_0_0"
+            image-tags: ["1.2.0"]
+            git-repository: "https://github.com/redeclipse/oldsvnre.git"
+
+          - ref: "refs/tags/v1.1.0"
+            dockerfile: "Dockerfile_1_0_0"
+            image-tags: ["1.1.0"]
+            git-repository: "https://github.com/redeclipse/oldsvnre.git"
+
+          - ref: "refs/tags/v1.0.0"
+            dockerfile: "Dockerfile_1_0_0"
+            image-tags: ["1.0.0"]
+            git-repository: "https://github.com/redeclipse/oldsvnre.git"
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.run_id }}-${{ matrix.config.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Cache updater executable
+        id: cache_updater
+        uses: actions/cache@v5
+        with:
+          path: updater
+          key: ${{ runner.os }}-${{ matrix.platform.arch }}-${{ hashFiles('go-image-updater/**') }}
+
+      - name: Install Go
+        if: steps.cache_updater.outputs.cache-hit != 'true'
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: "go-image-updater/go.mod"
+          cache-dependency-path: "go-image-updater/go.sum"
+
+      - name: Build updater
+        if: steps.cache_updater.outputs.cache-hit != 'true'
+        working-directory: go-image-updater
+        run: |
+          go build -x -o ../updater ./cmd/updater/
+
+      - name: Check for updates
+        id: update_check
+        run: |
+          ./updater gha \
+            --print-gh-out \
+            --registry-url "ghcr.io" \
+            --registry-user "${{ github.actor }}" \
+            --registry-pass "${{ secrets.GITHUB_TOKEN }}" \
+            --dockerfile "${{ matrix.config.dockerfile }}" \
+            --git-repository "${{ matrix.config.git-repository }}" \
+            --git-ref "${{ matrix.config.ref }}" \
+            "--arch" "${{ matrix.platform.arch }}" \
+            "--base-image" "ghcr.io/linuxcontainers/alpine:latest" \
+            "${{ env.DOCKER_IMAGE }}:${{ matrix.config.image-tags[0] }}" \
+            "${{ env.GHCR_IMAGE }}:${{ matrix.config.image-tags[0] }}"
+
+      - name: Login to Docker Hub
+        if: steps.update_check.outputs.update-required == 'true'
+        uses: docker/login-action@v4
+        with:
+          username: iceflower
+          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+
+      - name: Login to GitHub Container Registry
+        if: steps.update_check.outputs.update-required == 'true'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        if: steps.update_check.outputs.update-required == 'true'
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push images
+        if: steps.update_check.outputs.update-required == 'true'
+        id: build
+        run: |
+          docker buildx build \
+            --platform linux/${{ matrix.platform.arch }} \
+            --build-arg RE_REF=${{ matrix.config.ref }} \
+            --build-arg RE_COMMIT=${{ steps.update_check.outputs.re-commit }} \
+            --label org.opencontainers.image.base.digest=${{ steps.update_check.outputs.base-digest }} \
+            --label org.opencontainers.image.documentation=${{ github.server_url }}/${{ github.repository }} \
+            --label org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }} \
+            --label dockerfile.hash=${{ steps.update_check.outputs.dockerfile-hash }} \
+            --tag ${{ env.DOCKER_IMAGE }} \
+            --tag ${{ env.GHCR_IMAGE }} \
+            --output type=registry,push-by-digest=true \
+            --metadata-file /tmp/meta.json \
+            --file ${{ matrix.config.dockerfile }} .
+
+          DIGEST=$(jq -r '."containerimage.digest"' /tmp/meta.json)
+          echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
+
+      - name: Create and push manifests
+        if: steps.update_check.outputs.update-required == 'true'
+        run: |
+          for tag in ${{ join(matrix.config.image-tags, ' ') }}; do
+            # push to docker.io is using the GHCR digest, as we only retrieved GHCR digest to avoid hitting rate limits on dockerhub
+            # this can fail, but whatever
+            docker buildx imagetools create \
+              --tag ${{ env.DOCKER_IMAGE }}:${tag} \
+              ${{ fromJSON(steps.update_check.outputs.other-digests)[format('{0}:{1}', env.GHCR_IMAGE, matrix.config.image-tags[0])] }} \
+              ${{ env.DOCKER_IMAGE }}@${{ steps.build.outputs.digest }} || echo "::warning::Failed to push to docker.io"
+
+            docker buildx imagetools create \
+              --tag ${{ env.GHCR_IMAGE }}:${tag} \
+              ${{ fromJSON(steps.update_check.outputs.other-digests)[format('{0}:{1}', env.GHCR_IMAGE, matrix.config.image-tags[0])] }} \
+              ${{ env.GHCR_IMAGE }}@${{ steps.build.outputs.digest }} || echo "::warning::Failed to push to ghcr.io"
+          done

@@ -1,0 +1,21 @@
+# published under the MIT License
+# https://opensource.org/licenses/mit-license.php
+
+services:
+  # <service_name>: The identifier used to manage this service (e.g., myserver, master, re_2_0)
+  <service_name>:
+    # <tag>: The image tag you want to use (e.g., master, latest, 2.0.0)
+    image: ghcr.io/iceflower/redeclipse-server:<tag>
+    ports:
+      # <serverport>: Must match the port defined in Red Eclipse's servinit.cfg
+      - "28801:28801/udp"
+      # <serverport + 1>: The server port plus one (e.g., if serverport is 28801, use 28802)
+      - "28802:28802/udp"
+    restart: unless-stopped
+    volumes:
+      # <home_dir>: Path to the RE home/config directory on your host system (e.g., /home/iceflower/re-master/home)
+      - <home_dir>:/re-server-config/home:ro
+      # <package_dir>: Optional path to your local package directory for custom maps. Remove this section if not needed.
+      - <package_dir>:/re-server-config/package:ro
+      # <sauerbraten_dir>: Only required for legacy versions (< 2.0.0). Remove this block if using v2.0.0 or master.
+      - <sauerbraten_dir>:/re-server-config/sauer:ro

@@ -18,9 +18,16 @@ RUN git init /redeclipse && \
 
 WORKDIR /redeclipse
 
-# pull maps
-RUN git submodule update --init --depth 1 ./data/maps && \
-    rm -rf ./data/maps/.git/
+# pull 1.5.3 maps as 1.5.0/1.5.1/1.5.2 maps are not available anymore
+RUN mkdir -p /redeclipse/data/maps && \
+    cd /redeclipse/data/maps && \
+    git init && \
+    git remote add origin https://github.com/redeclipse/maps.git && \
+    git fetch --depth 1 origin 2af1fe518f59cd33944c3d04adbe771b6192630f && \
+    git checkout FETCH_HEAD
+
+# patch 1.5.0 and 1.5.1 source code
+RUN sed -i 's/clientinfo \*m = m >= 0/clientinfo \*m = target >= 0/g' src/game/server.cpp
 
 # build server
 RUN make install-server \
@@ -56,7 +63,8 @@ RUN apk update && \
     mkdir -p /redeclipse/config && \
     mkdir -p /redeclipse/data/maps && \
     mkdir -p /re-server-config/home && \
-    mkdir -p /re-server-config/package
+    mkdir -p /re-server-config/package && \
+    mkdir -p /re-server-config/sauer
 
 COPY --from=builder /redeclipse/bin/native/ /redeclipse/bin/native/
 COPY --from=builder /redeclipse/config /redeclipse/config/
@@ -66,4 +74,4 @@ USER redeclipse
 
 WORKDIR /redeclipse
 ENTRYPOINT ["./bin/native/redeclipse_server_linux"]
-CMD ["-h/re-server-config/home/", "-p/re-server-config/package/"]
+CMD ["-h/re-server-config/home/", "-p/re-server-config/package/", "-o/re-server-config/sauer/"]

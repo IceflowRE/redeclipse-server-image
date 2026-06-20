@@ -1,0 +1,11 @@
+name: Commit Check
+on: [push, pull_request]
+
+jobs:
+  commit-check:
+    name: Commit Check
+    runs-on: ubuntu-slim
+    steps:
+      - uses: IceflowRE/gitcc@v3.0.0
+        with:
+          validator: "simpletag"

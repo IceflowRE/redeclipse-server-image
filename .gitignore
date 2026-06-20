@@ -1,5 +1,4 @@
 *hash-storage.json
 *config.json
-*docker-compose.yml
-go-github-webhook/Dockerfile_*
+compose.yaml
 *.exe
