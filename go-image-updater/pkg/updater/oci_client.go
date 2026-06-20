@@ -119,7 +119,7 @@ func (client *OCIClient) metaFromIndex(desc *remote.Descriptor, arch string, os 
 
 	digest, otherDigests, found := findPlatformDigest(manifest.Manifests, arch, os)
 	if !found {
-		return nil, []string{}, ErrImageNotFound
+		return nil, otherDigests, ErrImageNotFound
 	}
 
 	meta = &ImageMetadata{
