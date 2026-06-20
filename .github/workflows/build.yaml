@@ -221,6 +221,7 @@ jobs:
             --label dockerfile.hash=${{ steps.update_check.outputs.dockerfile-hash }} \
             --tag ${{ env.DOCKER_IMAGE }} \
             --tag ${{ env.GHCR_IMAGE }} \
+            --attest type=provenance,mode=max \
             --output type=registry,push-by-digest=true \
             --metadata-file /tmp/meta.json \
             --file ${{ matrix.config.dockerfile }} .
