@@ -39,7 +39,7 @@ An easy-to-use container image for a [Red Eclipse](https://www.redeclipse.net) S
 ## Quick reference
 
 * **Registries**:  
-  GitHub Container Registry (recommended): [`ghcr.io/iceflower/redeclipse-server`](ghcr.io/iceflower/redeclipse-server)  
+  GitHub Container Registry (recommended): [`ghcr.io/iceflower/redeclipse-server`](https://github.com/users/IceflowRE/packages/container/package/redeclipse-server)  
   Docker Hub: [`docker.io/iceflower/redeclipse-server`](https://hub.docker.com/r/iceflower/redeclipse-server)
 
 * **Built architectures**:  
