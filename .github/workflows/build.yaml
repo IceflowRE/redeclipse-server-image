@@ -237,11 +237,15 @@ jobs:
             # this can fail, but whatever
             docker buildx imagetools create \
               --tag ${{ env.DOCKER_IMAGE }}:${tag} \
+              --annotation "index:org.opencontainers.image.description=Server image for Red Eclipse." \
+              --annotation "index:org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
               ${{ fromJSON(steps.update_check.outputs.other-digests)[format('{0}:{1}', env.GHCR_IMAGE, matrix.config.image-tags[0])] }} \
               ${{ env.DOCKER_IMAGE }}@${{ steps.build.outputs.digest }} || echo "::warning::Failed to push to docker.io"
 
             docker buildx imagetools create \
               --tag ${{ env.GHCR_IMAGE }}:${tag} \
+              --annotation "index:org.opencontainers.image.description=Server image for Red Eclipse." \
+              --annotation "index:org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
               ${{ fromJSON(steps.update_check.outputs.other-digests)[format('{0}:{1}', env.GHCR_IMAGE, matrix.config.image-tags[0])] }} \
               ${{ env.GHCR_IMAGE }}@${{ steps.build.outputs.digest }} || echo "::warning::Failed to push to ghcr.io"
           done
