@@ -15,7 +15,7 @@ type Fingerprint struct {
 }
 
 func IsUpdateRequired(curFp Fingerprint, newFp Fingerprint) bool {
-	return curFp != newFp
+	return curFp.BaseDigest != newFp.BaseDigest || curFp.Dockerfile != newFp.Dockerfile || curFp.ReCommit != newFp.ReCommit
 }
 
 func FingerprintCmpString(curFp Fingerprint, newFp Fingerprint) string {
