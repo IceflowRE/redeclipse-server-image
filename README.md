@@ -101,7 +101,7 @@ If an image is not natively available for your architecture, first verify if Red
 | :----------------: | :----------------: |
 | `2.0.0` - `master` | `Dockerfile_2_0_0` |
 | `1.5.3` - `stable` | `Dockerfile_1_5_3` |
-| `1.5.0` - `1.5.3`  | `Dockerfile_1_5_0` |
+| `1.5.0` - `1.5.2`  | `Dockerfile_1_5_0` |
 |      `1.4.0`       | `Dockerfile_1_4_0` |
 | `1.0.0` - `1.3.1`  | `Dockerfile_1_0_0` |
 
