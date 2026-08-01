@@ -8,10 +8,10 @@ import (
 
 type Fingerprint struct {
 	// the current digest of the image
-	Digest     string `json:"digest"`
-	BaseDigest string `json:"alpine"`
-	Dockerfile string `json:"dockerfile"`
-	ReCommit   string `json:"reCommit"`
+	Digest     string
+	BaseDigest string
+	Dockerfile string
+	ReCommit   string
 }
 
 func IsUpdateRequired(curFp Fingerprint, newFp Fingerprint) bool {
