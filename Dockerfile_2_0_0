@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxcontainers/alpine:latest AS builder
+FROM docker.io/alpine:latest AS builder
 
 # redeclipse reference
 ARG RE_REF
@@ -32,7 +32,7 @@ RUN make install-server \
         LDFLAGS="-O3 -flto" \
         -O -j$(nproc) -C src
 
-FROM ghcr.io/linuxcontainers/alpine:latest
+FROM docker.io/alpine:latest
 
 # redeclipse commit sha
 ARG RE_COMMIT=""
@@ -41,7 +41,7 @@ LABEL org.opencontainers.image.title="Red Eclipse Server"
 LABEL org.opencontainers.image.licenses="LicenseRef-Red-Eclipse-License"
 LABEL org.opencontainers.image.authors="Iceflower S <iceflower@iceflower.eu>"
 LABEL org.opencontainers.image.vendor="Iceflower S <iceflower@iceflower.eu>"
-LABEL org.opencontainers.image.base.name="ghcr.io/linuxcontainers/alpine:latest"
+LABEL org.opencontainers.image.base.name="docker.io/alpine:latest"
 LABEL org.opencontainers.image.revision="${RE_COMMIT}"
 
 # add server user and set permissions

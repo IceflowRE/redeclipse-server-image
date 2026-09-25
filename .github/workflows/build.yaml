@@ -184,7 +184,7 @@ jobs:
             --git-repository "${{ matrix.config.git-repository }}" \
             --git-ref "${{ matrix.config.ref }}" \
             "--arch" "${{ matrix.platform.arch }}" \
-            "--base-image" "ghcr.io/linuxcontainers/alpine:latest" \
+            "--base-image" "docker.io/alpine:latest" \
             "${{ env.DOCKER_IMAGE }}:${{ matrix.config.image-tags[0] }}" \
             "${{ env.GHCR_IMAGE }}:${{ matrix.config.image-tags[0] }}"
 
